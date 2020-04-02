@@ -7,10 +7,26 @@ import (
     "testing"
 )
 
+var (
+    testMallId = "ectlocal"
+    testKey = "postgresql_mall_master"
+)
+
 func TestInsertOrUpdate(t *testing.T) {
     result := repository.GetDataSourceRepository().InsertOrUpdate(
-        "helloworld",
-        "postgresql_mall_master",
+        testMallId,
+        testKey,
+        model.DatabaseConnection{
+            Host: "localhost",
+            Port: 9999,
+            Database: "mall",
+            Username: "malluser",
+            Password: "password",
+        })
+
+    result = repository.GetDataSourceRepository().InsertOrUpdate(
+        testMallId,
+        "postgresl_mall_slave",
         model.DatabaseConnection{
             Host: "localhost",
             Port: 9999,
@@ -25,6 +41,11 @@ func TestInsertOrUpdate(t *testing.T) {
 }
 
 func TestFindById(t *testing.T) {
-    result := repository.GetDataSourceRepository().FindById("helloworld")
+    result := repository.GetDataSourceRepository().FindById(testMallId)
+    log.Println(result)
+}
+
+func TestDeleteByIdAndKey(t *testing.T) {
+    result := repository.GetDataSourceRepository().DeleteByIdAndKey(testMallId, testKey)
     log.Println(result)
 }

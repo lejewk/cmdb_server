@@ -55,3 +55,14 @@ func (s *dataSourceRepository) FindById(mallId string) *bson.M {
 
     return &data
 }
+
+func (s *dataSourceRepository) DeleteByIdAndKey(mallId string, key string) bool {
+    err := s.coll().UpdateId(mallId, bson.M{"$unset": bson.M{key: 1}})
+
+    if err != nil {
+        log.Fatal("Failed delete key", err)
+        return false
+    }
+
+    return true
+}
